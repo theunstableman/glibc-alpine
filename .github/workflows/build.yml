@@ -23,4 +23,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: glibc-alpine:latest
+          tags: karrelin/glibc-alpine:latest
