@@ -3,6 +3,7 @@ on:
     schedule:
         - cron:  '0 3 * * *'
     workflow_dispatch:
+    push:
 
 jobs:
   push_to_registry:
