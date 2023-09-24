@@ -17,7 +17,7 @@ RUN ../glibc/configure \
          CXXFLAGS="-O2"
 RUN make -j4
 RUN make -j4 install
-RUN mv /tmp/install/lib /lib64
+RUN mv /tmp/install /lib64
 
 FROM alpine
 # Transfer over glibc from builder
