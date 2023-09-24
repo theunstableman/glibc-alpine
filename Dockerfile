@@ -29,5 +29,5 @@ WORKDIR /lib64/install/lib
 # Add libs from built glibc to /lib64 so LD can detect it.
 RUN cp -r . /lib64
 WORKDIR /lib64
-RUN rm install/
+RUN rm -r install/
 WORKDIR /root
