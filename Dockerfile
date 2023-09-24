@@ -1,3 +1,4 @@
+# Warning: spaghetti code
 FROM ubuntu:latest as glibc-builder
 RUN apt-get update
 # Prepping for glibc build
@@ -20,13 +21,13 @@ RUN make -j4 install
 RUN mv /tmp/install /lib64
 
 FROM alpine
+# LD is blind and wont detect /lib64 so set LD_LIBRARY_PATH to detect /lib64
+ENV LD_LIBRARY_PATH=/lib:/lib64:/usr/lib
 # Transfer over glibc from builder
 COPY --from=glibc-builder /lib64 /lib64
-# Restore symlink with functioning symlink
-RUN ln -sf /lib64/lib/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
-WORKDIR /lib64
-RUN rm -rf lib/
-WORKDIR /lib64/lib
+WORKDIR /lib64/install/lib
 # Add libs from built glibc to /lib64 so LD can detect it.
 RUN cp -r . /lib64
-WORKDIR /
+WORKDIR /lib64
+RUN rm install/
+WORKDIR /root
