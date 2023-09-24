@@ -18,8 +18,6 @@ RUN ../glibc/configure \
 RUN make -j4
 RUN make -j4 install
 RUN mv /tmp/install/lib /lib64
-# Clean up
-RUN rm -rf /tmp/
 
 FROM alpine
 # Transfer over glibc from builder
