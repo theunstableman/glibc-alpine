@@ -30,8 +30,7 @@ ENV LD_LIBRARY_PATH=/lib:/lib64:/usr/lib
 # Transfer over glibc from builder
 COPY --from=glibc-builder /lib64 /lib64
 WORKDIR /lib64/install/lib
-# Add libs from built glibc to /lib64 so LD can detect it.
-RUN cp -r . /lib64
+RUN cp ./ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
 # Fix for people who use this for multistage dockerfile builds.
 RUN mkdir -p /tmp/install/lib
 RUN cp -r . /tmp/install/lib
