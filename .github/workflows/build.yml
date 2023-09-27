@@ -4,6 +4,8 @@ on:
         - cron:  '0 3 */2 * *'
     workflow_dispatch:
     push:
+        paths:
+            - Dockerfile
 
 jobs:
   push_to_registry:
