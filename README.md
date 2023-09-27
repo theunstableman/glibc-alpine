@@ -1,6 +1,6 @@
-
 # glibc-alpine
 Glibc in alpine
+[![CI Builds](https://github.com/theunstableman/glibc-alpine/actions/workflows/build.yml/badge.svg)](https://github.com/theunstableman/glibc-alpine/actions/workflows/build.yml)
 
 ## Quick start
 
