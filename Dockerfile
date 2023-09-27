@@ -32,6 +32,8 @@ COPY --from=glibc-builder /lib64 /lib64
 WORKDIR /lib64/install/lib
 # Add libs from built glibc to /lib64 so LD can detect it.
 RUN cp -r . /lib64
+# Fix for people who use this for multistage dockerfile builds.
+RUN cp -r . /tmp/install/lib
 WORKDIR /lib64
 RUN rm -r install/
 WORKDIR /root
