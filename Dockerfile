@@ -33,6 +33,7 @@ WORKDIR /lib64/install/lib
 # Add libs from built glibc to /lib64 so LD can detect it.
 RUN cp -r . /lib64
 # Fix for people who use this for multistage dockerfile builds.
+RUN mkdir -p /tmp/install/lib
 RUN cp -r . /tmp/install/lib
 WORKDIR /lib64
 RUN rm -r install/
