@@ -4,8 +4,12 @@ RUN apt-get update
 # Prepping for glibc build
 RUN apt-get install --no-install-recommends git build-essential -y 
 RUN apt-get install --no-install-recommends gawk bison python3 python3-pip -y
+RUN apt-get install --no-install-recommends lld -y
 # Start building glibc
 RUN git clone --depth=1 https://sourceware.org/git/glibc.git /tmp/glibc
+RUN mkdir -p /root/bin/lld
+RUN printf "#!/bin/bash\nlld "$@"" > /root/bin/lld/ld
+RUN chmod a+x /root/bin/lld/ld
 RUN mkdir /tmp/build
 WORKDIR /tmp/build
 RUN ../glibc/configure \
@@ -14,8 +18,8 @@ RUN ../glibc/configure \
          --build=x86_64-linux-gnu \
          CC="gcc -m64" \
          CXX="g++ -m64" \
-         CFLAGS="-O2" \
-         CXXFLAGS="-O2"
+         CFLAGS="-O2 -B/root/bin/lld" \
+         CXXFLAGS="-O2 -B/root/bin/lld"
 RUN make -j4
 RUN make -j4 install
 RUN mv /tmp/install /lib64
