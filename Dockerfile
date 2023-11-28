@@ -27,7 +27,7 @@ FROM alpine
 ENV LD_LIBRARY_PATH=/lib:/lib64:/usr/lib
 # Transfer over glibc from builder
 COPY --from=glibc-builder /libs /lib64
-WORKDIR /lib64/install/lib
+WORKDIR /lib64/lib
 RUN cp ./ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
 RUN mkdir -p /libs
 RUN cp -r . /libs/lib
