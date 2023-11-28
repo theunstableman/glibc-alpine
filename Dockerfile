@@ -1,4 +1,3 @@
-# Warning: spaghetti code
 FROM ubuntu:latest as glibc-builder
 RUN apt-get update
 # Prepping for glibc build
@@ -13,7 +12,7 @@ RUN chmod a+x /root/bin/lld/ld
 RUN mkdir /tmp/build
 WORKDIR /tmp/build
 RUN ../glibc/configure \
-         --prefix=/tmp/install \
+         --prefix=/libs \
          --host=x86_64-linux-gnu \
          --build=x86_64-linux-gnu \
          CC="gcc -m64" \
@@ -22,18 +21,15 @@ RUN ../glibc/configure \
          CXXFLAGS="-O2 -B/root/bin/lld"
 RUN make -j4
 RUN make -j4 install
-RUN mv /tmp/install /lib64
 
 FROM alpine
 # LD is blind and wont detect /lib64 so set LD_LIBRARY_PATH to detect /lib64
 ENV LD_LIBRARY_PATH=/lib:/lib64:/usr/lib
 # Transfer over glibc from builder
-COPY --from=glibc-builder /lib64 /lib64
+COPY --from=glibc-builder /libs /lib64
 WORKDIR /lib64/install/lib
 RUN cp ./ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
-# Fix for people who use this for multistage dockerfile builds.
-RUN mkdir -p /tmp/install/lib
-RUN cp -r . /tmp/install/lib
+RUN mkdir -p /libs
+RUN cp -r . /libs/lib
 WORKDIR /lib64
-RUN rm -r install/
 WORKDIR /root
