@@ -19,8 +19,8 @@ RUN ../glibc/configure \
          CXX="g++ -m64" \
          CFLAGS="-O2 -B/root/bin/lld" \
          CXXFLAGS="-O2 -B/root/bin/lld"
-RUN make -j4
-RUN make -j4 install
+RUN make -j$(($(nproc) + 1))
+RUN make -j$(($(nproc) + 1)) install
 
 FROM alpine
 # LD is blind and wont detect /lib64 so set LD_LIBRARY_PATH to detect /lib64
